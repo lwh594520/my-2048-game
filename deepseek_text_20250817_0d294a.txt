@@ -1,1 +1,0 @@
-https://cdn.jsdelivr.net/gh/你的GitHub用户名/仓库名@分支名/文件路径
