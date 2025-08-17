@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2048游戏 - GitHub + jsDelivr 部署指南</title>
+    <title>响应式2048游戏 - 完美适配任何容器</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -15,92 +15,63 @@
         
         body {
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
             background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
             padding: 20px;
-            color: #333;
         }
         
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        .game-section {
-            flex: 1;
-            min-width: 400px;
-        }
-        
-        .guide-section {
-            flex: 1;
-            min-width: 400px;
-        }
-        
-        .panel {
-            background: rgba(255, 255, 255, 0.92);
+        .game-container {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            padding: 25px;
+            padding: 3vmin;
             position: relative;
             overflow: hidden;
-            margin-bottom: 30px;
-            height: auto;
-        }
-        
-        .panel::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
-            z-index: 0;
         }
         
         .game-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 2vmin;
+            flex-wrap: wrap;
         }
         
         .title {
-            font-size: 3.5rem;
+            font-size: 6vmin;
             font-weight: 700;
             color: #ff6b6b;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-right: 2vmin;
         }
         
         .scores-container {
             display: flex;
-            gap: 15px;
+            gap: 1.5vmin;
+            margin-top: 1vmin;
         }
         
         .score-box {
             background: #ffd166;
-            border-radius: 10px;
-            padding: 10px 15px;
+            border-radius: 1.5vmin;
+            padding: 1.5vmin;
             text-align: center;
-            min-width: 100px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            min-width: 20vmin;
         }
         
         .score-title {
-            font-size: 1rem;
+            font-size: 2vmin;
             font-weight: 600;
             color: #333;
             text-transform: uppercase;
         }
         
         .score-value {
-            font-size: 2rem;
+            font-size: 4vmin;
             font-weight: 700;
             color: #333;
         }
@@ -108,27 +79,27 @@
         .game-controls {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 25px;
-            gap: 15px;
+            margin-bottom: 3vmin;
+            gap: 1.5vmin;
             flex-wrap: wrap;
-            position: relative;
-            z-index: 1;
         }
         
         .difficulty-container, .game-buttons {
             display: flex;
-            gap: 15px;
+            gap: 1.5vmin;
+            flex-wrap: wrap;
         }
         
         .btn {
-            padding: 12px 20px;
+            padding: 1.5vmin 3vmin;
             border: none;
-            border-radius: 10px;
-            font-size: 1rem;
+            border-radius: 1.5vmin;
+            font-size: 2.5vmin;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            white-space: nowrap;
         }
         
         .btn:hover {
@@ -160,45 +131,50 @@
             color: white;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 1vmin;
         }
         
         .game-grid-container {
             position: relative;
-            z-index: 1;
+            width: 100%;
+            padding-bottom: 100%; /* 保持正方形 */
         }
         
         .game-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
+            gap: 1.5vmin;
             background: #bbada0;
-            border-radius: 10px;
-            padding: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 1.5vmin;
+            padding: 1.5vmin;
         }
         
         .grid-cell {
             background: rgba(238, 228, 218, 0.35);
-            border-radius: 6px;
-            aspect-ratio: 1/1;
+            border-radius: 1vmin;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2rem;
+            font-size: 4vmin;
             font-weight: 700;
-            transition: all 0.15s ease;
         }
         
         .tile {
             position: absolute;
-            border-radius: 6px;
+            border-radius: 1vmin;
             display: flex;
             justify-content: center;
             align-items: center;
             font-weight: 700;
             z-index: 2;
             transition: all 0.15s ease;
+            font-size: 4vmin;
+            box-shadow: 0 0.5vmin 1vmin rgba(0, 0, 0, 0.1);
         }
         
         .game-message {
@@ -208,7 +184,7 @@
             right: 0;
             bottom: 0;
             background: rgba(238, 228, 218, 0.85);
-            border-radius: 10px;
+            border-radius: 1.5vmin;
             display: none;
             flex-direction: column;
             justify-content: center;
@@ -217,180 +193,112 @@
         }
         
         .game-message p {
-            font-size: 3rem;
+            font-size: 5vmin;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin-bottom: 3vmin;
             color: #333;
+            text-align: center;
         }
         
         .game-message .btn {
-            font-size: 1.2rem;
-            padding: 15px 30px;
+            font-size: 3vmin;
+            padding: 2vmin 4vmin;
         }
         
         .how-to-play {
-            margin-top: 25px;
+            margin-top: 3vmin;
             background: rgba(255, 255, 255, 0.7);
-            border-radius: 10px;
-            padding: 15px;
-            position: relative;
-            z-index: 1;
+            border-radius: 1.5vmin;
+            padding: 2vmin;
         }
         
         .how-to-play h3 {
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 1.5vmin;
+            font-size: 3vmin;
         }
         
         .how-to-play p {
             color: #555;
-            font-size: 0.9rem;
-            line-height: 1.5;
+            font-size: 2.2vmin;
+            line-height: 1.6;
         }
         
         .key {
             display: inline-block;
             background: #333;
             color: white;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.9rem;
+            padding: 0.5vmin 1.5vmin;
+            border-radius: 0.5vmin;
+            font-size: 2vmin;
+            margin: 0 0.5vmin;
+        }
+        
+        .touch-controls {
+            display: none;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 1vmin;
+            margin-top: 3vmin;
+            height: 25vmin;
+        }
+        
+        .touch-btn {
+            background: rgba(118, 110, 101, 0.5);
+            border-radius: 1vmin;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 5vmin;
+            color: white;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .touch-up {
+            grid-column: 2;
+            grid-row: 1;
+        }
+        
+        .touch-left {
+            grid-column: 1;
+            grid-row: 2;
+        }
+        
+        .touch-right {
+            grid-column: 3;
+            grid-row: 2;
+        }
+        
+        .touch-down {
+            grid-column: 2;
+            grid-row: 3;
         }
         
         /* Tile colors */
-        .tile-2 { background: #eee4da; color: #776e65; font-size: 1.8rem; }
-        .tile-4 { background: #ede0c8; color: #776e65; font-size: 1.8rem; }
-        .tile-8 { background: #f2b179; color: white; font-size: 1.8rem; }
-        .tile-16 { background: #f59563; color: white; font-size: 1.8rem; }
-        .tile-32 { background: #f67c5f; color: white; font-size: 1.8rem; }
-        .tile-64 { background: #f65e3b; color: white; font-size: 1.8rem; }
-        .tile-128 { background: #edcf72; color: white; font-size: 1.6rem; }
-        .tile-256 { background: #edcc61; color: white; font-size: 1.6rem; }
-        .tile-512 { background: #edc850; color: white; font-size: 1.6rem; }
-        .tile-1024 { background: #edc53f; color: white; font-size: 1.4rem; }
-        .tile-2048 { background: #edc22e; color: white; font-size: 1.4rem; }
-        .tile-super { background: #3c3a32; color: white; font-size: 1.2rem; }
+        .tile-2 { background: #eee4da; color: #776e65; }
+        .tile-4 { background: #ede0c8; color: #776e65; }
+        .tile-8 { background: #f2b179; color: white; }
+        .tile-16 { background: #f59563; color: white; }
+        .tile-32 { background: #f67c5f; color: white; }
+        .tile-64 { background: #f65e3b; color: white; }
+        .tile-128 { background: #edcf72; color: white; }
+        .tile-256 { background: #edcc61; color: white; }
+        .tile-512 { background: #edc850; color: white; }
+        .tile-1024 { background: #edc53f; color: white; font-size: 3vmin; }
+        .tile-2048 { background: #edc22e; color: white; font-size: 3vmin; }
+        .tile-super { background: #3c3a32; color: white; font-size: 2.5vmin; }
         
-        /* 指南样式 */
-        .guide-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .guide-header h1 {
-            font-size: 2.5rem;
-            color: #fff;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
-        
-        .step {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        
-        .step h2 {
-            color: #1a2a6c;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .step-number {
-            background: #ff6b6b;
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-        
-        .step-content {
-            line-height: 1.6;
-        }
-        
-        .code-block {
-            background: #2d2d2d;
-            color: #f8f8f2;
-            padding: 15px;
-            border-radius: 5px;
-            font-family: 'Courier New', monospace;
-            margin: 15px 0;
-            overflow-x: auto;
-        }
-        
-        .code-comment {
-            color: #75715e;
-        }
-        
-        .code-value {
-            color: #a6e22e;
-        }
-        
-        .link-preview {
-            background: #e9f7fe;
-            border-left: 4px solid #1a73e8;
-            padding: 15px;
-            border-radius: 0 5px 5px 0;
-            margin: 15px 0;
-        }
-        
-        .link-preview a {
-            color: #1a73e8;
-            font-weight: bold;
-            word-break: break-all;
-        }
-        
-        .github-example {
-            background: #f5f5f5;
-            border: 1px solid #e1e4e8;
-            border-radius: 6px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-        
-        .github-example h3 {
-            color: #24292e;
-            margin-bottom: 15px;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 900px) {
-            .container {
-                flex-direction: column;
-            }
-            
-            .game-section, .guide-section {
-                min-width: 100%;
-            }
-        }
-        
+        /* 响应式调整 */
         @media (max-width: 600px) {
-            .title {
-                font-size: 2.5rem;
+            .game-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
             
             .scores-container {
-                gap: 8px;
-            }
-            
-            .score-box {
-                min-width: 80px;
-                padding: 8px 10px;
-            }
-            
-            .score-title {
-                font-size: 0.8rem;
-            }
-            
-            .score-value {
-                font-size: 1.5rem;
+                width: 100%;
+                justify-content: space-between;
             }
             
             .game-controls {
@@ -402,170 +310,74 @@
                 justify-content: center;
             }
             
-            .btn {
-                padding: 10px 15px;
-                font-size: 0.9rem;
+            .touch-controls {
+                display: grid;
+            }
+        }
+        
+        @media (max-height: 500px) {
+            .game-container {
+                max-width: 90vw;
+            }
+            
+            .game-grid-container {
+                padding-bottom: 50vh;
             }
         }
     </style>
 </head>
 <body>
-    <div class="guide-header">
-        <h1>GitHub + jsDelivr 游戏部署指南</h1>
-    </div>
-    
-    <div class="container">
-        <div class="game-section">
-            <div class="panel">
-                <div class="game-header">
-                    <div class="title">2048</div>
-                    <div class="scores-container">
-                        <div class="score-box">
-                            <div class="score-title">分数</div>
-                            <div class="score-value" id="score">0</div>
-                        </div>
-                        <div class="score-box">
-                            <div class="score-title">最高分</div>
-                            <div class="score-value" id="best-score">0</div>
-                        </div>
-                    </div>
+    <div class="game-container">
+        <div class="game-header">
+            <div class="title">2048</div>
+            <div class="scores-container">
+                <div class="score-box">
+                    <div class="score-title">分数</div>
+                    <div class="score-value" id="score">0</div>
                 </div>
-                
-                <div class="game-controls">
-                    <div class="difficulty-container">
-                        <button class="btn btn-difficulty active" data-size="5">5×5</button>
-                        <button class="btn btn-difficulty" data-size="7">7×7</button>
-                        <button class="btn btn-difficulty" data-size="9">9×9</button>
-                    </div>
-                    <div class="game-buttons">
-                        <button class="btn btn-new-game" id="new-game">新游戏</button>
-                        <button class="btn btn-undo" id="undo"><i class="fas fa-undo"></i> 撤销</button>
-                    </div>
-                </div>
-                
-                <div class="game-grid-container">
-                    <div class="game-grid" id="grid"></div>
-                    <div class="game-message" id="game-message">
-                        <p id="message-text"></p>
-                        <button class="btn btn-new-game" id="restart">再玩一次</button>
-                    </div>
-                </div>
-                
-                <div class="how-to-play">
-                    <h3>游戏指南</h3>
-                    <p>
-                        • 使用 <span class="key">↑</span> <span class="key">↓</span> <span class="key">←</span> <span class="key">→</span> 方向键移动方块<br>
-                        • 当两个相同数字的方块碰撞时，它们会合并成它们的和<br>
-                        • 每次移动后，会在空白位置随机生成一个2或4<br>
-                        • 当网格被填满且无法移动时，游戏结束<br>
-                        • 点击"撤销"按钮可以回退到上一步操作
-                    </p>
+                <div class="score-box">
+                    <div class="score-title">最高分</div>
+                    <div class="score-value" id="best-score">0</div>
                 </div>
             </div>
         </div>
         
-        <div class="guide-section">
-            <div class="panel">
-                <h2 style="color:#1a2a6c; margin-bottom:20px;">创建游戏 CDN 链接的步骤</h2>
-                
-                <div class="step">
-                    <h2><span class="step-number">1</span>创建 GitHub 仓库</h2>
-                    <div class="step-content">
-                        <p>在 GitHub 上创建一个新的仓库来存放你的游戏文件：</p>
-                        <ul>
-                            <li>访问 <a href="https://github.com/new" target="_blank">github.com/new</a></li>
-                            <li>输入仓库名称（例如：my-2048-game）</li>
-                            <li>选择公开（Public）</li>
-                            <li>勾选 "Initialize this repository with a README"</li>
-                            <li>点击 "Create repository"</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="step">
-                    <h2><span class="step-number">2</span>上传游戏文件</h2>
-                    <div class="step-content">
-                        <p>将你的游戏 HTML 文件上传到仓库：</p>
-                        <ul>
-                            <li>在仓库页面，点击 "Add file" → "Upload files"</li>
-                            <li>将你的 HTML 文件拖到上传区域</li>
-                            <li>添加提交信息（例如：Add game file）</li>
-                            <li>点击 "Commit changes"</li>
-                        </ul>
-                        
-                        <div class="github-example">
-                            <h3>示例仓库结构</h3>
-                            <pre>
-my-2048-game/
-├── index.html   # 你的游戏主文件
-└── README.md    # 仓库说明文件
-                            </pre>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="step">
-                    <h2><span class="step-number">3</span>获取 jsDelivr CDN 链接</h2>
-                    <div class="step-content">
-                        <p>jsDelivr CDN 链接格式如下：</p>
-                        
-                        <div class="code-block">
-                            https://cdn.jsdelivr.net/gh/<span class="code-value">你的GitHub用户名</span>/<span class="code-value">仓库名</span>/<span class="code-value">文件路径</span>
-                        </div>
-                        
-                        <p>例如：</p>
-                        
-                        <div class="link-preview">
-                            <p>如果你的用户名是 <strong>game-dev</strong>，仓库名是 <strong>2048-game</strong>，文件是 <strong>index.html</strong>，则 CDN 链接为：</p>
-                            <a href="https://cdn.jsdelivr.net/gh/game-dev/2048-game@main/index.html" target="_blank">
-                                https://cdn.jsdelivr.net/gh/game-dev/2048-game@main/index.html
-                            </a>
-                        </div>
-                        
-                        <p>注意：</p>
-                        <ul>
-                            <li>将 <code>main</code> 替换为你的仓库分支名称（默认为 main）</li>
-                            <li>如果你的文件在子目录中，需要包含完整路径</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="step">
-                    <h2><span class="step-number">4</span>分享你的游戏</h2>
-                    <div class="step-content">
-                        <p>现在你可以分享这个链接给任何人：</p>
-                        <ul>
-                            <li>链接会通过 jsDelivr 的全球 CDN 加速</li>
-                            <li>用户无需下载即可直接在浏览器中玩游戏</li>
-                            <li>更新游戏只需在 GitHub 上更新文件</li>
-                        </ul>
-                        
-                        <div class="link-preview">
-                            <p>这就是你提供的俄罗斯方块 CDN 链接的工作原理：</p>
-                            <a href="https://cdn.jsdelivr.net/gh/Uharasakura/-@main/Tetris.html" target="_blank">
-                                https://cdn.jsdelivr.net/gh/Uharasakura/-@main/Tetris.html
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="step">
-                    <h2><span class="step-number">5</span>高级技巧</h2>
-                    <div class="step-content">
-                        <p>优化你的 CDN 链接：</p>
-                        <ul>
-                            <li><strong>版本控制</strong>：使用版本号而不是分支名，确保链接稳定</li>
-                            <li><strong>子目录</strong>：将游戏放在子目录中保持仓库整洁</li>
-                            <li><strong>压缩资源</strong>：压缩 CSS/JS 文件减少加载时间</li>
-                        </ul>
-                        
-                        <p>版本化链接示例：</p>
-                        <div class="code-block">
-                            https://cdn.jsdelivr.net/gh/user/repo@<span class="code-value">1.0.0</span>/file.js
-                        </div>
-                    </div>
-                </div>
+        <div class="game-controls">
+            <div class="difficulty-container">
+                <button class="btn btn-difficulty active" data-size="5">5×5</button>
+                <button class="btn btn-difficulty" data-size="7">7×7</button>
+                <button class="btn btn-difficulty" data-size="9">9×9</button>
             </div>
+            <div class="game-buttons">
+                <button class="btn btn-new-game" id="new-game">新游戏</button>
+                <button class="btn btn-undo" id="undo"><i class="fas fa-undo"></i> 撤销</button>
+            </div>
+        </div>
+        
+        <div class="game-grid-container">
+            <div class="game-grid" id="grid"></div>
+            <div class="game-message" id="game-message">
+                <p id="message-text"></p>
+                <button class="btn btn-new-game" id="restart">再玩一次</button>
+            </div>
+        </div>
+        
+        <div class="touch-controls">
+            <div class="touch-btn touch-up"><i class="fas fa-arrow-up"></i></div>
+            <div class="touch-btn touch-left"><i class="fas fa-arrow-left"></i></div>
+            <div class="touch-btn touch-right"><i class="fas fa-arrow-right"></i></div>
+            <div class="touch-btn touch-down"><i class="fas fa-arrow-down"></i></div>
+        </div>
+        
+        <div class="how-to-play">
+            <h3>游戏指南</h3>
+            <p>
+                • 使用 <span class="key">↑</span> <span class="key">↓</span> <span class="key">←</span> <span class="key">→</span> 方向键移动方块<br>
+                • 当两个相同数字的方块碰撞时，它们会合并成它们的和<br>
+                • 每次移动后，会在空白位置随机生成一个2或4<br>
+                • 当网格被填满且无法移动时，游戏结束<br>
+                • 点击"撤销"按钮可以回退到上一步操作
+            </p>
         </div>
     </div>
 
@@ -597,6 +409,12 @@ my-2048-game/
             const messageText = document.getElementById('message-text');
             const restartButton = document.getElementById('restart');
             const difficultyButtons = document.querySelectorAll('.btn-difficulty');
+            
+            // 触摸控制元素
+            const touchUp = document.querySelector('.touch-up');
+            const touchDown = document.querySelector('.touch-down');
+            const touchLeft = document.querySelector('.touch-left');
+            const touchRight = document.querySelector('.touch-right');
             
             // 初始化游戏
             function initGame() {
@@ -675,12 +493,15 @@ my-2048-game/
                             if (value > 2048) tile.classList.add('tile-super');
                             tile.textContent = value;
                             
-                            // 计算位置
-                            const cellSize = gridContainer.offsetWidth / config.gridSize;
-                            tile.style.width = `${cellSize - 20}px`;
-                            tile.style.height = `${cellSize - 20}px`;
-                            tile.style.top = `${r * cellSize + 10}px`;
-                            tile.style.left = `${c * cellSize + 10}px`;
+                            // 计算位置和大小
+                            const gridRect = gridContainer.getBoundingClientRect();
+                            const cellWidth = gridRect.width / config.gridSize;
+                            const cellHeight = gridRect.height / config.gridSize;
+                            
+                            tile.style.width = `${cellWidth - 20}px`;
+                            tile.style.height = `${cellHeight - 20}px`;
+                            tile.style.top = `${r * cellHeight + 10}px`;
+                            tile.style.left = `${c * cellWidth + 10}px`;
                             
                             gridContainer.appendChild(tile);
                         }
@@ -938,15 +759,15 @@ my-2048-game/
             
             // 显示游戏消息
             function showGameMessage(message) {
-                messageText.textContent = message;
+                messageText。textContent = message;
                 gameMessage.style.display = 'flex';
             }
             
             // 设置事件监听器
             function setupEventListeners() {
                 // 键盘控制
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'ArrowUp') {
+                document。addEventListener('keydown'， (e) => {
+                    if (e。key === 'ArrowUp') {
                         move('up');
                     } else if (e.key === 'ArrowDown') {
                         move('down');
@@ -958,25 +779,34 @@ my-2048-game/
                 });
                 
                 // 按钮事件
-                newGameButton.addEventListener('click', resetGame);
-                restartButton.addEventListener('click', resetGame);
-                undoButton.addEventListener('click', undo);
+                newGameButton。addEventListener('click'， resetGame);
+                restartButton。addEventListener('click'， resetGame);
+                undoButton。addEventListener('click'， undo);
                 
                 // 难度选择
-                difficultyButtons.forEach(button => {
-                    button.addEventListener('click', () => {
+                difficultyButtons。forEach(button => {
+                    button。addEventListener('click'， () => {
                         // 更新活动按钮
                         difficultyButtons.forEach(btn => btn.classList.remove('active'));
                         button.classList.add('active');
                         
                         // 更新网格大小
-                        config.gridSize = parseInt(button.dataset.size);
+                        config。gridSize = parseInt(button。dataset。size);
                         
                         // 重置游戏
                         createGrid();
                         resetGame();
                     });
                 });
+                
+                // 触摸控制
+                touchUp。addEventListener('click'， () => move('up'));
+                touchDown。addEventListener('click'， () => move('down'));
+                touchLeft。addEventListener('click'， () => move('left'));
+                touchRight。addEventListener('click'， () => move('right'));
+                
+                // 窗口大小变化时更新游戏
+                window。addEventListener('resize'， updateGrid);
             }
             
             // 初始化游戏
